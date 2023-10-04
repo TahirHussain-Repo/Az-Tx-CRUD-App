@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import Survey from "./Components/survey";
+import Navbar from "./Components/navbar";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
@@ -33,6 +35,8 @@ function App() {
   
   return (
     <div className="App">
+      <Navbar />
+      <Survey />
       <h2>Question:</h2>
       {allSurveys.map(allSurveys => 
         <div key={allSurveys.survey_id}>
