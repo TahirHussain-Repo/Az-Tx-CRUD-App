@@ -6,12 +6,14 @@ import {
     NavLink,
 } from "react-router-dom";
 import Landing from "./landing";
-import Survey from "./survey";
+import SurveyForm from "./survey";
 import Results from "./results"
 import Login from "./login";
 import Signup from "./signup";
 
-const navbar = () => {
+const Navbar = () => {
+
+  
     return (
         <Router>
           <div>
@@ -36,11 +38,10 @@ const navbar = () => {
                 <AuthButtons />
               </div>
             </nav>
-    
             <div>
               <Routes>
                 <Route path="/results" element={<Results />} />
-                <Route path="/survey" element={<Survey />} />
+                <Route path="/survey" element={<SurveyForm />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Landing />} />
@@ -51,7 +52,7 @@ const navbar = () => {
     );
 }
 
-export default navbar
+export default Navbar
 
 function AuthButtons() {
     return (
@@ -69,3 +70,5 @@ function AuthButtons() {
       </ul>
     );
   }
+
+  

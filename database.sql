@@ -5,5 +5,5 @@ CREATE TABLE survey(
     question text,
     answerchoices text[],
     pickedanswer int,
-    notes VARCHAR(2000)
+    notes VARCHAR(5000)
 );
