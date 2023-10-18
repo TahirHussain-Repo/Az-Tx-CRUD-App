@@ -115,38 +115,3 @@ const Survey = () => {
 }
 export default Survey
 
-/* 
-
-    {allSurveys.map((allSurveys, idx) => )}
-
-    <ProgressBar
-        percent={((index -1) * 100) /5 }
-        filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-    >
-        <Step transition="scale">
-        {({ accomplished, index }) => (
-            <div className={`step ${accomplished ? "completed" : ""}`}>1</div>
-        )}
-        </Step>
-        <Step transition="scale">
-        {({ accomplished, index }) => (
-            <div className={`step ${accomplished ? "completed" : ""}`}>2</div>          
-        )}
-        </Step>
-        <Step transition="scale">
-        {({ accomplished, index }) => (
-            <div className={`step ${accomplished ? "completed" : ""}`}>3</div>
-        )}
-        </Step>
-        <Step transition="scale">
-        {({ accomplished, index }) => (
-            <div className={`step ${accomplished ? "completed" : ""}`}>4</div>          
-        )}
-        </Step>
-        <Step transition="scale">
-        {({ accomplished, index }) => (
-            <div className={`step ${accomplished ? "completed" : ""}`}>5</div>
-        )}
-        </Step>
-    </ProgressBar> 
-*/
