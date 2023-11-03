@@ -16,6 +16,5 @@ CREATE TABLE survey_answers (
 CREATE TABLE user_responses (
     id SERIAL PRIMARY KEY,
     question_id INT REFERENCES survey_questions(id) ON DELETE CASCADE,
-    answer_id INT REFERENCES survey_answers(id),
-    response_timestamp TIMESTAMP DEFAULT NOW()
+    answer_id INT REFERENCES survey_answers(id)
 );

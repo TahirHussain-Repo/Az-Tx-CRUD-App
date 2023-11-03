@@ -8,8 +8,7 @@ const Survey = () => {
 
     const [questions, setQuestions] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState('');
-    const [userResponses, setUserResponses] = useState([]);
+    const [answers, setAnswers] = useState({});
 
     const baseUrl = 'http://localhost:5001'
 
@@ -17,53 +16,49 @@ const Survey = () => {
         axios.get(`${baseUrl}/survey/questions`)
             .then((response) => {
                 setQuestions(response.data);
-                setUserResponses(new Array(response.data.length).fill(''));
             })
             .catch((error) => {
                 console.error('Error fetching questions:', error);
             });
     }, []);
 
-    const handleAnswerChange = (event) => {
-        setSelectedAnswer(event.target.value);
+    const handleAnswerChange = (question_id, e) => {
+        console.log(question_id)
+        console.log(e.target.value);
+        setAnswers(prevState => ({
+            ...prevState,
+            [question_id]: e.target.value,
+        }));
     };
 
     const handleNext = () => {
         if (currentStep < questions.length - 1) {
-            const newResponses = [...userResponses];
-            newResponses[currentStep] = selectedAnswer;
-            setUserResponses(newResponses);
             setCurrentStep(currentStep + 1);
-            setSelectedAnswer('');
+        }else{
+            submitAnswers();
         }
     };
 
     const handlePrevious = () => {
         if (currentStep > 0) {
             setCurrentStep(currentStep - 1);
-            setSelectedAnswer(userResponses[currentStep - 1]);
         }
     };
 
-    const handleFinish = () => {
-        if (selectedAnswer) {
-            const newResponses = [...userResponses];
-            newResponses[currentStep] = selectedAnswer;
-            setUserResponses(newResponses);
+    const submitAnswers = async () => {
+        console.log(answers);
 
-            // Send user responses to the backend for saving
-            axios.post(`${baseUrl}/survey/save-responses`, { userResponses })
-                .then((response) => {
-                    console.log('Responses saved successfully');
-                })
-                .catch((error) => {
-                    console.error('Error saving responses:', error);
-                });
-        } else {
-            console.error('Please select an answer before finishing.');
+        try {
+            for (let [questionId, answerId] of Object.entries(answers)) {
+                await axios.post(`${baseUrl}/survey/save-responses`, { question_id: questionId, answer_id: answerId });
+            }
+            alert('Survey completed!');
+        } catch (error) {
+            console.error("Error submitting answers:", error);
+            alert('Error submitting survey. Please try again.');
         }
     };
-
+    
    return (
         <Container className="h-100 py-5">
             <Row className="m-10 pb-5">
@@ -78,9 +73,9 @@ const Survey = () => {
                             <div className="text-left pb-4">
                                 {questions[currentStep].question_text}
                             </div>
-                            <Form.Select onChange={handleAnswerChange} value={selectedAnswer}>
+                            <Form.Select value={answers[questions[currentStep].id] || ''} onChange={(e) => handleAnswerChange(questions[currentStep].id, e)} >
                                 <option value="">Select an answer</option>
-                                {questions[currentStep].answers.map(answer => 
+                                {questions[currentStep].answers.map((answer) => 
                                     <option key={answer.id} value={answer.id}>
                                         {answer.answer_text}
                                     </option>
@@ -100,7 +95,7 @@ const Survey = () => {
                             {currentStep < questions.length - 1 ? (
                                 <Button onClick={handleNext}>Next</Button>
                             ) : (
-                                <Button onClick={handleFinish}>Finish</Button>
+                                <Button onClick={submitAnswers}>Finish</Button>
                             )}
                         </Card.Footer>
                     </Card>

@@ -70,17 +70,6 @@ app.post('/survey/multiple-answers', (req, res) => {
     insertAnswers();
 });
 
-// Get all questions
-// app.get('/survey/questions', async (req, res) => {
-//     try {
-//         const questions = await pool.query('SELECT * FROM survey_questions');
-//         res.json(questions.rows);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-
 app.get('/survey/questions', (req, res) => {
     pool.query('SELECT * FROM survey_questions', (err, questionsResult) => {
         if (err) {
@@ -129,18 +118,12 @@ app.get('/survey/answers/:questionId', async (req, res) => {
     }
 });
 
-// Save user responses
 app.post('/survey/save-responses', async (req, res) => {
-    const userResponses = req.body.userResponses; 
-
+    const { question_id, answer_id } = req.body;
     try {
-        for (const response of userResponses) {
-            const { questionId, answerId } = response;
-            const query = 'INSERT INTO user_responses (question_id, answer_id) VALUES ($1, $2)';
-            await pool.query(query, [questionId, answerId]);
-        }
-
-        res.status(201).json({ message: 'Responses saved successfully' });
+        await pool.query('INSERT INTO user_responses (question_id, answer_id) VALUES ($1, $2)', [question_id, answer_id]);
+        res.status(200).json({ message: 'Response saved successfully '});
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
