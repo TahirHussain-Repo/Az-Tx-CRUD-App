@@ -14,7 +14,8 @@ root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
-    redirectUri={window.location.origin}
+    redirectUri={`${window.location.origin}/auth`}
+    audience="https://aztxhealth/api"
   >
     <App />
   </Auth0Provider>

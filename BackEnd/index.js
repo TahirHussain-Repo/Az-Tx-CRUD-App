@@ -1,8 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const app = express();
 const cors = require('cors');
+const { expressjwt: jwt } = require("express-jwt");
+const jwksRsa = require('jwks-rsa');
+
 
 app.use(bodyParser.json());
 
@@ -19,6 +23,21 @@ const pool = new Pool({
     host: "localhost",
     port: 5432
 });
+
+const checkJwt = jwt({
+    secret: jwksRsa.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: `https://aztxhealth.us.auth0.com/.well-known/jwks.json`
+    }),
+    audience: 'https://aztxhealth/api',
+    issuer: `https://aztxhealth.us.auth0.com/`,
+    algorithms: ['RS256']
+  });
+  
+app.use(checkJwt);
+  
 
 // Add a new question to the database
 app.post('/survey/questions', (req, res) => {
@@ -129,6 +148,25 @@ app.post('/survey/save-responses', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+app.post('/api/user', checkJwt, async (req, res) => {
+    const { auth0_id, email } = req.body;
+  
+    try {
+      const userResult = await pool.query('SELECT * FROM survey_users WHERE auth0_id = $1', [auth0_id]);
+  
+      if (userResult.rows.length === 0) {
+        await pool.query('INSERT INTO survey_users (auth0_id, email) VALUES ($1, $2)', [auth0_id, email]);
+      } else {
+        await pool.query('UPDATE survey_users SET email = $1 WHERE auth0_id = $2', [email, auth0_id]);
+      }
+  
+      res.status(200).json({ message: 'User information updated' });
+    } catch (error) {
+      console.error('Database error:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

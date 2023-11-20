@@ -2,7 +2,7 @@ CREATE DATABASE survey_db;
 
 CREATE TABLE survey_users (
     id SERIAL PRIMARY KEY,
-    auth0_id VARCHAR(255) UNIQUE NOT NULL, -- This will store the Auth0 user ID
+    auth0_id VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL
 );
 
@@ -26,4 +26,6 @@ CREATE TABLE user_responses (
 );
 
 ALTER TABLE user_responses ADD COLUMN user_id INT REFERENCES survey_users(id);
+
+ALTER TABLE survey_questions ADD COLUMN section_id INT;
 
