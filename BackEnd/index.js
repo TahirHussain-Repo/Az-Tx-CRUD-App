@@ -36,7 +36,7 @@ const checkJwt = jwt({
     algorithms: ['RS256']
   });
   
-app.use(checkJwt);
+app.use('/api/user', checkJwt);
   
 
 // Add a new question to the database
