@@ -13,6 +13,7 @@ const Auth = () => {
 
       try {
         const accessToken = await getAccessTokenSilently();
+        console.log('Access Token: ', accessToken);
         const userData = {
           auth0_id: user.sub,
           email: user.email

@@ -166,7 +166,7 @@ app.post('/api/user', checkJwt, async (req, res) => {
       console.error('Database error:', error);
       res.status(500).send('Internal Server Error');
     }
-  });
+});
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

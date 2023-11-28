@@ -27,5 +27,5 @@ CREATE TABLE user_responses (
 
 ALTER TABLE user_responses ADD COLUMN user_id INT REFERENCES survey_users(id);
 
-ALTER TABLE survey_questions ADD COLUMN section_id INT;
+-- ALTER TABLE survey_questions ADD COLUMN section_id INT; haven't added this line yet
 
