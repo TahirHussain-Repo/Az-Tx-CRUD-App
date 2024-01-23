@@ -90,12 +90,12 @@ const Survey = () => {
                         </Card.Body>
                         <Card.Footer className="d-flex justify-content-between">
                             {currentStep > 0 && (
-                                <Button onClick={handlePrevious}>Previous</Button>
+                                <Button variant="outline-info" onClick={handlePrevious}>Previous</Button>
                             )}
                             {currentStep < questions.length - 1 ? (
-                                <Button onClick={handleNext}>Next</Button>
+                                <Button variant="outline-info" onClick={handleNext}>Next</Button>
                             ) : (
-                                <Button onClick={submitAnswers}>Finish</Button>
+                                <Button variant="outline-info" onClick={submitAnswers}>Finish</Button>
                             )}
                         </Card.Footer>
                     </Card>
