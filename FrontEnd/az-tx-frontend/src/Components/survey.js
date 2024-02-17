@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { useAuth0 } from "@auth0/auth0-react";
 
 import "./survey.css"
 import {Container, Row, Col, Card, Button, Form} from "react-bootstrap";
  
 const Survey = () => {
 
+    const { user, isAuthenticated } = useAuth0();
     const [questions, setQuestions] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [answers, setAnswers] = useState({});
