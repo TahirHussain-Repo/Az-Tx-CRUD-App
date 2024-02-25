@@ -8,7 +8,7 @@ const Auth = () => {
   const { user, isAuthenticated } = useAuth0();
 
   const baseUrl = 'http://localhost:5001'
-  
+
   const saveUserDetails = async (userDetails) => {
     try {
       const response = await fetch(`${baseUrl}/user/details`, {
@@ -35,6 +35,7 @@ const Auth = () => {
     id: user.sub,
     email: user.email,
   }
+  console.log(auth0UserDetails)
   
   saveUserDetails(auth0UserDetails)
 
@@ -44,7 +45,6 @@ const Auth = () => {
         <>
           <h2>Welcome, {user.name}!</h2>
           <p>Email: {user.email}</p>
-          <p>Auth0 ID: {user.sub}</p>
         </>
       ) : (
         <p>Please log in to view your profile.</p>
